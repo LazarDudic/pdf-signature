@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+
+  php:
+    container_name: signature_app
+    build:
+      context: .
+    working_dir: /var/www
+    mem_limit: 1g
+    volumes:
+      - ./:/var/www
+      - ./storage/app/public/:/var/www/public/storage/
+    ports:
+      - 8000:8000
+    networks:
+      - app
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: signature_mysql
+    image: mysql:8.0
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  db-data: ~
