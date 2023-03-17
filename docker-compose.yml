@@ -6,7 +6,6 @@ services:
     build:
       context: .
     working_dir: /var/www
-    mem_limit: 1g
     volumes:
       - ./:/var/www
       - ./storage/app/public/:/var/www/public/storage/
